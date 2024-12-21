@@ -304,8 +304,14 @@ class CodeWriter:
         self.file.write(asm_command)
 
     def write_if(self, label):
-        # TODO
-        pass
+        asm_command = '''    @SP
+        M=M-1
+        A=M
+        D=M
+        @{}
+        D;JNE
+        '''.format(label)
+        self.file.write(asm_command)
 
     def write_function(self, f_name, n_vars):
         # TODO
