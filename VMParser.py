@@ -39,7 +39,13 @@ class Parser:
         """Returns the type of the current command, in this format:\n
         C_ARITHMETIC for logical/arithmetic command,\n
         C_PUSH for push command,\n
-        C_POP for pop command.
+        C_POP for pop command,\n
+        C_LABEL,\n
+        C_GOTO,\n
+        C_IF,\n
+        C_FUNCTION,\n
+        C_RETURN,\n
+        C_CALL
 
         Returns:
             const str: The type of the current command as C_<TYPE>
@@ -50,12 +56,16 @@ class Parser:
                  'gt': 'C_ARITHMETIC', 'lt': 'C_ARITHMETIC',
                  'and': 'C_ARITHMETIC', 'or': 'C_ARITHMETIC',
                  'not': 'C_ARITHMETIC', 'push': 'C_PUSH',
-                 'pop': 'C_POP'}
+                 'pop': 'C_POP', 'goto': 'C_GOTO',
+                 'if-goto': 'C_IF', 'label': 'C_LABEL',
+                 'call': 'C_CALL', 'function': 'C_FUNCTION',
+                 'return': 'C_RETURN'}
         return types[cmd]
 
     def arg1(self) -> str:
         """Returns the first argument of the current command.\n
-        In the case of C_ARITHMETIC the command itself (add, sub, etc.) is returned.
+        In the case of C_ARITHMETIC the command itself (add, sub, etc.) is returned.\n
+        Should not be called if current command is C_RETURN
 
         Returns:
             str: The first argument of current command.
@@ -67,7 +77,7 @@ class Parser:
 
     def arg2(self) -> int:
         """Return the second argument of the current command.\n
-        Should be called only if the current command is C_PUSH or C_POP.
+        Should be called only if the current command is C_PUSH, C_POP, C_FUNCTION or C_CALL.
 
         Returns:
             int: The second argument of the current command.
