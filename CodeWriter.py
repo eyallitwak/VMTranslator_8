@@ -292,3 +292,29 @@ class CodeWriter:
         """Closes this instance's output stream, effectively ending the usability of this instance.
         """
         self.file.close()
+
+    def write_label(self, label):
+        asm_command = '(' + label + ')\n'
+        self.file.write(asm_command)
+
+    def write_goto(self, label):
+        asm_command = '''    @{}
+        0;JMP
+        '''.format(label)
+        self.file.write(asm_command)
+
+    def write_if(self, label):
+        # TODO
+        pass
+
+    def write_function(self, f_name, n_vars):
+        # TODO
+        pass
+
+    def write_call(self, f_name, n_vars):
+        # TODO
+        pass
+
+    def write_return(self):
+        # TODO
+        pass
