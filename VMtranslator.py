@@ -10,7 +10,7 @@ def translate(vm_input, asm_output):
         asm_output (str) : Path of the output .asm file to be created.
     """
     parser = VMParser.Parser(vm_input)
-    writer = CodeWriter.CodeWriter(asm_output)
+    writer = CodeWriter.CodeWriter(vm_input, asm_output)
 
     while parser.has_more_lines():
         parser.advance()
