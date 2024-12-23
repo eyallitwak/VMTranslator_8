@@ -3,16 +3,17 @@ import os
 
 class CodeWriter:
     comp_index = 0  # index to label comparison operations, since they need labeling
+    call_index = 0  # index for return address labels in call operations
 
-    def __init__(self, vm_file):
+    def __init__(self, f_name, vm_file_output):
         """Creates a CodeWriter object, that will write to the specified file.
 
         Args:
             dest_file (path): Path to create the output file.
         """
-        self.path = os.path.abspath(vm_file)[:-2]+'asm'
+        self.path = os.path.abspath(vm_file_output)[:-2]+'asm'
         self.file = open(self.path, 'a+')
-        self.file_name = os.path.basename(self.path)
+        self.file_name = os.path.basename(os.path.abspath(f_name))
         self.push_pop_dict = {'local': 'LCL',
                               'argument': 'ARG',
                               'this': 'THIS',
@@ -317,9 +318,22 @@ class CodeWriter:
         # TODO
         pass
 
-    def write_call(self, f_name, n_vars):
-        # TODO
+    def write_call(self, f_name, n_args):
+        asm_command = '''   @{name}$ret{num}
+    D=A
+    '''
         pass
+
+    def write_internal_push():
+        lines = ''' // RAM[SP] = D
+    @SP
+    A=M
+    M=D
+    // SP++
+    @SP
+    M=M+1
+    '''
+        return lines #FINISH THIS AND RETURN TO FINISH WRITE_CALL
 
     def write_return(self):
         # TODO
