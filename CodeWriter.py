@@ -299,18 +299,18 @@ class CodeWriter:
 
     def write_goto(self, label):
         asm_command = '''    @{}
-        0;JMP
-        '''.format(label)
+    0;JMP
+    '''.format(label)
         self.file.write(asm_command)
 
     def write_if(self, label):
         asm_command = '''    @SP
-        M=M-1
-        A=M
-        D=M
-        @{}
-        D;JNE
-        '''.format(label)
+    M=M-1
+    A=M
+    D=M
+    @{}
+    D;JNE
+    '''.format(label)
         self.file.write(asm_command)
 
     def write_function(self, f_name, n_vars):
