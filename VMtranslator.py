@@ -17,8 +17,14 @@ def translate(vm_input, asm_output):
         writer.comment(parser.current_command)
         if parser.command_type() == 'C_ARITHMETIC':
             writer.write_arithmetic(parser.arg1())
-        else:
+        elif parser.command_type() == 'C_PUSH' or parser.command_type() == 'C_POP':
             writer.write_push_pop(parser.command_type(),
                                   parser.arg1(), parser.arg2())
+        elif parser.command_type() == 'C_LABEL':
+            writer.write_label(parser.arg1())
+        elif parser.command_type() == 'C_GOTO':
+            writer.write_goto(parser.arg1())
+        elif parser.command_type() == 'C_IF':
+            writer.write_if(parser.arg1())
 
     writer.close()
