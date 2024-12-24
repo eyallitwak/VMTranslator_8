@@ -365,5 +365,44 @@ class CodeWriter:
         return lines
 
     def write_return(self):
-        # TODO
-        pass
+        asm_command = '''    @LCL
+    D=M
+    @R14
+    M=D
+    @5
+    A=D-A
+    D=M
+    @R15
+    M=D
+    @SP
+    M=M-1
+    A=M
+    D=M
+    @ARG
+    A=M
+    M=D
+    D=A+1
+    @SP
+    M=D
+    '''
+        asm_command += self.reset_segment('THAT')
+        asm_command += self.reset_segment('THIS')
+        asm_command += self.reset_segment('ARG')
+        asm_command += self.reset_segment('LCL')
+        asm_command += '''@R15
+    A=M
+    0;JMP
+    '''
+        self.file.write(asm_command)
+
+    # important to call in the correct order of segments!!
+    # this relies on the fact that we keep R14 as the endFrame
+    def reset_segment(self, segment):
+        lines = '''@R14
+    M=M-1
+    A=M
+    D=M
+    @{}
+    M=D
+    '''.format(segment)
+        return lines
