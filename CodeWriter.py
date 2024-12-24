@@ -315,8 +315,12 @@ class CodeWriter:
         self.file.write(asm_command)
 
     def write_function(self, f_name, n_vars):
-        # TODO
-        pass
+        self.write_label(f_name)
+        for _ in range(n_vars):
+            asm_command = '''    @0
+    D=A
+    ''' + self.write_internal_push()
+            self.file.write(asm_command)
 
     def write_call(self, f_name, n_args):
         asm_command = '''    @{name}$ret{num}
