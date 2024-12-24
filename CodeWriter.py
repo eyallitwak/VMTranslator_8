@@ -296,13 +296,13 @@ class CodeWriter:
 
     def write_label(self, label):
         asm_command = '(' + label + ')\n'
-        self.file.write(asm_command)
+        self.file.write('\n' + asm_command)
 
     def write_goto(self, label):
         asm_command = '''    @{}
     0;JMP
     '''.format(label)
-        self.file.write(asm_command)
+        self.file.write('\n' + asm_command)
 
     def write_if(self, label):
         asm_command = '''    @SP
@@ -323,7 +323,7 @@ class CodeWriter:
             self.file.write(asm_command)
 
     def write_call(self, f_name, n_args):
-        asm_command = '''@{name}$ret{num}
+        asm_command = '''    @{name}$ret{num}
     D=A
     '''.format(name=f_name, num=str(CodeWriter.call_index)) + self.write_internal_push() +\
             '''@LCL
