@@ -323,9 +323,9 @@ class CodeWriter:
             self.file.write(asm_command)
 
     def write_call(self, f_name, n_args):
-        asm_command = '''    @{name}$ret{num}
+        asm_command = '''@{name}$ret{num}
     D=A
-    '''.format(name=f_name, num=str(self.call_index)) + self.write_internal_push() +\
+    '''.format(name=f_name, num=str(CodeWriter.call_index)) + self.write_internal_push() +\
             '''@LCL
     D=M
     ''' + self.write_internal_push() +\
@@ -352,8 +352,8 @@ class CodeWriter:
 
         self.file.write(asm_command)
         self.write_goto(f_name)
-        self.write_label(f_name+'$ret'+str(self.call_index))
-        self.call_index += 1
+        self.write_label(f_name+'$ret'+str(CodeWriter.call_index))
+        CodeWriter.call_index += 1
 
     def write_internal_push(self):
         lines = '''@SP
@@ -406,3 +406,14 @@ class CodeWriter:
     M=D
     '''.format(segment)
         return lines
+
+    def write_bootstrap(self):
+        asm_command = '''    @256
+    D=A
+    @SP
+    M=D
+    '''
+        self.file.write('\n// BOOTSTRAP\n')
+        self.file.write(asm_command)
+        self.file.write('\n')
+        self.write_call('Sys.init', 0)

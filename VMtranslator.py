@@ -34,3 +34,9 @@ def translate(vm_input, asm_output):
             writer.write_return()
 
     writer.close()
+
+
+def bootstrap(vm_input, asm_output):
+    writer = CodeWriter.CodeWriter(vm_input, asm_output)
+    writer.write_bootstrap()
+    writer.close()

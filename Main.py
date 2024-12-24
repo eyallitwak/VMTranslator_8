@@ -39,7 +39,9 @@ def main():
         if os.path.isfile(output[:-2] + 'asm'):
             os.remove(output[:-2] + 'asm')
 
-        for f in files:
+        for count, f in enumerate(files):
+            if count == 0:
+                VMtranslator.bootstrap(f, output)
             VMtranslator.translate(f, output)
         print("Translation completed!")
 
