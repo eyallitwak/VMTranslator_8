@@ -319,21 +319,46 @@ class CodeWriter:
         pass
 
     def write_call(self, f_name, n_args):
-        asm_command = '''   @{name}$ret{num}
+        asm_command = '''    @{name}$ret{num}
     D=A
-    '''
-        pass
-
-    def write_internal_push():
-        lines = ''' // RAM[SP] = D
+    '''.format(name=f_name, num=str(self.call_index)) + self.write_internal_push() +\
+            '''@LCL
+    D=M
+    ''' + self.write_internal_push() +\
+            '''@ARG
+    D=M
+    ''' + self.write_internal_push() +\
+            '''@THIS
+    D=M
+    ''' + self.write_internal_push() +\
+            '''@THAT
+    D=M
+    ''' + self.write_internal_push() +\
+            '''@{}
+    D=A
     @SP
+    D=M-D
+    @ARG
+    M=D
+    @SP
+    D=M
+    @LCL
+    M=D
+    '''.format(str(n_args + 5))
+
+        self.file.write(asm_command)
+        self.write_goto(f_name)
+        self.write_label(f_name+'$ret'+str(self.call_index))
+        self.call_index += 1
+
+    def write_internal_push(self):
+        lines = '''@SP
     A=M
     M=D
-    // SP++
     @SP
     M=M+1
     '''
-        return lines #FINISH THIS AND RETURN TO FINISH WRITE_CALL
+        return lines
 
     def write_return(self):
         # TODO
